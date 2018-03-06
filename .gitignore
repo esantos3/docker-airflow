@@ -24,3 +24,7 @@ sftp-config.json
 
 # Python
 __pycache__
+
+# credentials
+test-project.json
+test-project-07191985-889ce2d2d196.json

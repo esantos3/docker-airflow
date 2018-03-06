@@ -1,11 +1,11 @@
 # VERSION 1.9.0-2
-# AUTHOR: Matthieu "Puckel_" Roisil
+# AUTHOR: Eddie Santos
 # DESCRIPTION: Basic Airflow container
-# BUILD: docker build --rm -t puckel/docker-airflow .
-# SOURCE: https://github.com/puckel/docker-airflow
+# BUILD: docker build --rm -t esantos3/docker-airflow .
+# SOURCE: https://github.com/esantos3/docker-airflow
 
 FROM python:3.6-slim
-MAINTAINER Puckel_
+MAINTAINER eddie.santos.3@gmail.com
 
 # Never prompts the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
@@ -49,14 +49,18 @@ RUN set -ex \
     && sed -i 's/^# en_US.UTF-8 UTF-8$/en_US.UTF-8 UTF-8/g' /etc/locale.gen \
     && locale-gen \
     && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
-    && useradd -ms /bin/bash -d ${AIRFLOW_HOME} airflow \
-    && pip install -U pip setuptools wheel \
+    && useradd -ms /bin/bash -d ${AIRFLOW_HOME} airflow
+
+RUN pip install -U pip setuptools wheel \
     && pip install Cython \
     && pip install pytz \
     && pip install pyOpenSSL \
     && pip install ndg-httpsclient \
     && pip install pyasn1 \
-    && pip install apache-airflow[crypto,celery,postgres,hive,jdbc]==$AIRFLOW_VERSION \
+    && pip install google-api-python-client \
+    && pip install pandas_gbq \
+    && pip install psycopg2-binary \
+    && pip install apache-airflow[crypto,celery,postgres,hive,jdbc,slack]==$AIRFLOW_VERSION \
     && pip install celery[redis]==4.0.2 \
     && apt-get purge --auto-remove -yqq $buildDeps \
     && apt-get clean \
